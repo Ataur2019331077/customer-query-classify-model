@@ -33,7 +33,7 @@ jobs:
           api.create_repo(repo_id=repo_id, exist_ok=True, token="${HF_TOKEN}")
           api.upload_folder(
               repo_id=repo_id,
-              folder_path=".",  
+              folder_path="customer-query-classify",
               path_in_repo="",
               token="${HF_TOKEN}"
           )
