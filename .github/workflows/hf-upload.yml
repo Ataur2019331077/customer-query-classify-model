@@ -25,16 +25,25 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
+          import os
           from huggingface_hub import HfApi
-
+      
           api = HfApi()
-          repo_id = "Ataur77/customer-query-classify-t5"
-
-          api.create_repo(repo_id=repo_id, exist_ok=True, token="${HF_TOKEN}")
+          repo_id = "Ataur77/customer-query-classify"
+          token = os.environ["HF_TOKEN"]
+      
+          api.create_repo(repo_id=repo_id, exist_ok=True, token=token)
           api.upload_folder(
               repo_id=repo_id,
               folder_path="customer-query-classify",
               path_in_repo="",
-              token="${HF_TOKEN}"
+              token=token
+          )
+          api.upload_file(
+              repo_id=repo_id,
+              path_or_fileobj="README.md",
+              path_in_repo="README.md",
+              token=token
           )
         shell: python
+
