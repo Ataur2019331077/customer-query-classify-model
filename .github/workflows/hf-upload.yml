@@ -1,0 +1,40 @@
+name: Upload Model to Hugging Face Hub
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  upload-model:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: pip install huggingface_hub
+
+      - name: Upload to Hugging Face Hub
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          from huggingface_hub import HfApi
+
+          api = HfApi()
+          repo_id = "Ataur77/customer-query-classify-t5"
+
+          api.create_repo(repo_id=repo_id, exist_ok=True, token="${HF_TOKEN}")
+          api.upload_folder(
+              repo_id=repo_id,
+              folder_path=".",  
+              path_in_repo="",
+              token="${HF_TOKEN}"
+          )
+        shell: python
